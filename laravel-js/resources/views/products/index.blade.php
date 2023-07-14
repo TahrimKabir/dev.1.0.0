@@ -65,7 +65,7 @@
                         <td>
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
 
-                                <dt class="col-sm-3 pb-0">
+                                <dt class="col-sm-6 pb-0">
                                     {{-- SM/ Red/ V-Nick  --}}
 
                                     @if($p->Price!=NULL)

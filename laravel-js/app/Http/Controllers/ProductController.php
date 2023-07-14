@@ -98,7 +98,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id',$id)->first();
         $variants = Variant::all();
-        return view('products.edit', compact('variants','product'));
+        return view('products.edit', compact('variants','product','id'));
     }
 
     /**
@@ -108,9 +108,11 @@ class ProductController extends Controller
      * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        //
+
+        // dd($request->product_name);
+        return view('show');
     }
 
     /**

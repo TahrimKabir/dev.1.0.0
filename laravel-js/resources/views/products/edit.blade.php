@@ -4,7 +4,10 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
     </div>
-    <form action="{{route('product.update')}}" method="get">
+    {{-- @php 
+    $id = 0;
+    @endphp --}}
+    <form action="{{route('product.update', $id)}}" method="get">
         @csrf
         <section>
             <div class="row">
