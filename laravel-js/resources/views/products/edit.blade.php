@@ -4,7 +4,8 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
     </div>
-    <form action="">
+    <form action="{{route('product.update')}}" method="get">
+        @csrf
         <section>
             <div class="row">
                 <div class="col-md-6">
@@ -20,7 +21,7 @@
                                        name="product_name"
                                        id="product_name"
                                        required
-                                       placeholder="Product Name"
+                                       placeholder="Product Name" value="{{$product->title}}"
                                        class="form-control">
                             </div>
                             <div class="form-group">
@@ -28,7 +29,7 @@
                                 <input type="text" name="product_sku"
                                        id="product_sku"
                                        required
-                                       placeholder="Product Name"
+                                       placeholder="Product Name" value="{{$product->sku}}"
                                        class="form-control"></div>
                             <div class="form-group mb-0">
                                 <label for="product_description">Description</label>
@@ -36,7 +37,7 @@
                                           id="product_description"
                                           required
                                           rows="4"
-                                          class="form-control"></textarea>
+                                          class="form-control" value="{{$product->description}}">{{$product->description}} </textarea>
                             </div>
                         </div>
                     </div>
@@ -80,6 +81,31 @@
                                     </tr>
                                     </thead>
                                     <tbody id="variant-previews">
+                                        @foreach($product->Price as $pp)
+                                       
+                                        <tr>
+                                        
+                                        
+                                       
+                                            <td>@foreach ($product->ProductVariant as $pv) 
+                                                @if($pv->id == $pp->product_variant_one) 
+                                                {{$pv->variant}} 
+                                                @endif
+                                                @if($pv->id == $pp->product_variant_two) 
+                                                /{{$pv->variant}} 
+                                                @endif
+                                                @if($pv->id == $pp->product_variant_three) 
+                                                /{{$pv->variant}} 
+                                                @endif
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                {{$pp->price}}
+                                            </td>
+                                           <td>{{$pp->stock}}</td>
+                                        
+                                    </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
