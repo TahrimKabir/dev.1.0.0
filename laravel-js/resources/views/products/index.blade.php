@@ -7,14 +7,20 @@
     </div>
 
 
-    <div class="card">
-        <form action="" method="get" class="card-header">
+    <div class="card"> 
+        <form action="{{route('product.index')}}" method="get" class="card-header">
+            @csrf
             <div class="form-row justify-content-between">
                 <div class="col-md-2">
-                    <input type="text" name="title" placeholder="Product Title" class="form-control">
+                    <input type="text" name="title"  placeholder="Product Title" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <select name="variant" id="" class="form-control">
+                    <select name="variant"  class="form-control">
+                     @foreach($product as $p)
+                     @foreach($p->ProductVariant as $pv)
+                     <option value="{{$pv->id}}">{{$pv->variant}}</option>
+                     @endforeach
+                     @endforeach
 
                     </select>
                 </div>
@@ -67,13 +73,26 @@
                                     {{-- {{$pp->product_variant_one}}/{{$pp->product_variant_two}}/{{$pp->product_variant_three}} --}}
                                     @foreach($p->ProductVariant as $pv)
                                     @if($pv->id == $pp->product_variant_one  )
+                                    @if($var == NULL)
+                                    {{$pv->variant}}
+                                    @elseif($var == $pp->product_variant_one || $var == $pp->product_variant_two || $var == $pp->product_variant_three)
                                     {{$pv->variant}}
                                     @endif
+                                    
+                                    @endif
                                     @if($pv->id == $pp->product_variant_two  )
+                                    @if($var == NULL)
+                                    /{{$pv->variant}}
+                                    @elseif($var == $pp->product_variant_one || $var == $pp->product_variant_two || $var == $pp->product_variant_three)
                                     /{{$pv->variant}}
                                     @endif
+                                    @endif
                                     @if($pv->id == $pp->product_variant_three  )
+                                    @if($var == NULL)
+                                    {{$pv->variant}}
+                                    @elseif($var == $pp->product_variant_one || $var == $pp->product_variant_two || $var == $pp->product_variant_three)
                                     /{{$pv->variant}}
+                                    @endif
                                     @endif
                                     @endforeach
                                     <br>
@@ -83,8 +102,10 @@
                                     
                                 </dt>
                                 <dd class="col-sm-9">
-                                    @if($p->Price!=NULL)
+                                    @if($p->Price!=NULL) 
                                     @foreach($p->Price as $pp)
+                                    @if($pt!=NULL && $pf!=NULL )
+                                    @if($pp->price>$pf && $pp->price<$pt)
                                     <dl class="row mb-0">
                                         <dt class="col-sm-4 pb-0">Price : 
                                         {{-- {{ number_format(200,2) }}  --}}
@@ -96,6 +117,8 @@
                                             {{-- {{ number_format(50,2) }} --}}
                                         </dd>
                                     </dl>
+                                    @endif
+                                    @endif
                                     @endforeach
                                     @endif
                                 </dd>
@@ -119,7 +142,7 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p> {{ $product->links() }} </p>
                 </div>
                 <div class="col-md-2">
 

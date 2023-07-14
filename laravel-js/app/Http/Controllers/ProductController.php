@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+
 use App\Models\Variant;
 use Illuminate\Http\Request;
 
@@ -13,12 +14,35 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $req)
     {
-        $product = Product::all();
         $variant = Variant::all();
-        // return view('products.show',compact('product'));
-        return view('products.index',compact('product','variant'));
+        $pf = $req->price_from;
+        $pt = $req->price_to;
+        $date = date('Y-m-d');
+        if(($req->title ==NULL && $req->date!=NULL)||($req->title !=NULL && $req->date==NULL)){
+            $var = $req->variant;
+           $product = Product::where('title',  $req->title )->orwhereDate('created_at',date('Y-m-d',strtotime($req->date)))->paginate(10);
+    
+    //         $product = Product::where('title',$req->title)->paginate(10);
+            // return view('products.index',compact('product','variant'));
+        }else if($req->title!=NULL && $req->date!=NULL){
+            $var = $req->variant;
+            $product = Product::where('title',  $req->title )->whereDate('created_at',date('Y-m-d',strtotime($req->date)))->paginate(10);
+        }
+        else{
+            
+            $product = Product::paginate(10);
+           
+        }
+        if($req->variant!=NULL){
+            $var = $req->variant;
+        }else{
+            $var = NULL;
+        }
+        
+        return view('products.index',compact('product','variant','var','pf','pt'));
+        
     }
 
     /**
@@ -53,6 +77,15 @@ class ProductController extends Controller
     public function show($product)
     {
         
+    }
+
+    public function search(Request $req)
+    {
+        dd($req->variant);
+        $product = Product::paginate(10);
+        $variant = Variant::all();
+        // return view('products.show',compact('product'));
+        return view('products.index',compact('product','variant'));
     }
 
     /**
